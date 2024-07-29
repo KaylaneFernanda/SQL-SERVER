@@ -1,0 +1,17 @@
+SELECT 
+    p.idprojeto,
+    p.titulo AS "Título do Projeto",
+    p.descricao AS "Descrição",
+    p.prazoEntrega AS "Prazo de Entrega",
+    p.orcamento AS "Orçamento",
+    u.usuarioNome AS "Nome do Cliente",
+    pt.projetoTipoNome AS "Tipo de Projeto",
+    ps.descricao AS "Status do Projeto"
+FROM 
+    projeto p
+JOIN 
+    usuario u ON p.idusuario = u.idusuario
+JOIN 
+    projetoTipo pt ON p.idprojetoTipo = pt.idprojetoTipo
+JOIN 
+    projetoStatus ps ON p.idprojetoStatus = ps.idprojetoStatus;

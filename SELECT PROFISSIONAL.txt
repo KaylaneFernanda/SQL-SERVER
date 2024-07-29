@@ -1,0 +1,27 @@
+SELECT 
+    u.idusuario,
+    u.usuarioNome,
+    u.cpfCnpj,
+    u.email,
+    u.telefone,
+    ht.tipo AS habilidadeTipo,
+    h.habilidadeNome,
+    hn.nivel,
+    a.nota,
+    a.data AS dataAvaliacao
+FROM 
+    usuario u
+INNER JOIN 
+    usuarioTipo ut ON u.idusuarioTipo = ut.idusuarioTipo
+LEFT JOIN 
+    habilidadeProfissional hu ON u.idusuario = hu.idusuario
+LEFT JOIN 
+    habilidade h ON hu.idhabilidade = h.idhabilidade
+LEFT JOIN 
+    habilidadeTipo ht ON h.idhabilidadeTipo = ht.idhabilidadeTipo
+LEFT JOIN 
+    habilidadeNivel hn ON h.idhabilidadeNivel = hn.idhabilidadeNivel
+LEFT JOIN 
+    avaliacao a ON u.idusuario = a.idusuario
+WHERE 
+    ut.tipo = 'Profissional';

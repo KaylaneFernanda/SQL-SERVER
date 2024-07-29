@@ -1,0 +1,13 @@
+SELECT 
+    u.usuarioNome AS NomeCliente,
+    u.cpfCnpj AS CPF,
+    p.titulo AS Projeto,
+    ps.descricao AS StatusProjeto
+FROM 
+    usuario u
+JOIN 
+    projeto p ON u.idusuario = p.idusuario
+JOIN 
+    projetoStatus ps ON p.idprojetoStatus = ps.idprojetoStatus
+WHERE 
+    u.idusuarioTipo = 1;  -- Filtra apenas os usuários do tipo 'Cliente'
