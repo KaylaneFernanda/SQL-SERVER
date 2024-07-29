@@ -1,0 +1,162 @@
+CREATE TABLE usuarioTipo (
+    idusuarioTipo INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    tipo VARCHAR(20) NOT NULL -- 'Cliente', 'Profissional', 'Administrador'
+);
+
+
+CREATE TABLE usuario (
+    idusuario INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    usuarioNome VARCHAR(100) NOT NULL,
+    cpfCnpj VARCHAR(14) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    idusuarioTipo INT NOT NULL,
+    FOREIGN KEY (idusuarioTipo) REFERENCES usuarioTipo(idusuarioTipo)
+);
+
+
+CREATE TABLE login (
+    idlogin INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    senha VARCHAR(100) NOT NULL,
+    resetSenhaToken VARCHAR(100),
+    resetSenhaTempo DATETIME,
+    idusuario INT NOT NULL,
+    FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
+);
+
+
+
+CREATE TABLE habilidadeNivel (
+    idhabilidadeNivel INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    nivel VARCHAR(20) NOT NULL -- 'Básico', 'Intermediário', 'Avançado'
+);
+
+
+CREATE TABLE habilidadeTipo (
+    idhabilidadeTipo INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    tipo VARCHAR(100) NOT NULL -- 'Técnica', 'Soft Skill'
+);
+
+
+CREATE TABLE habilidade (
+    idhabilidade INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    habilidadeNome VARCHAR(300) NOT NULL,
+    idhabilidadeTipo INT NOT NULL,
+    idhabilidadeNivel INT NOT NULL,
+    FOREIGN KEY (idhabilidadeTipo) REFERENCES habilidadeTipo(idhabilidadeTipo),
+    FOREIGN KEY (idhabilidadeNivel) REFERENCES habilidadeNivel(idhabilidadeNivel)
+);
+
+
+CREATE TABLE habilidadeProfissional (
+    idhabilidadeProfissional INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    idhabilidade INT NOT NULL,
+    idusuario INT NOT NULL,
+    FOREIGN KEY (idhabilidade) REFERENCES habilidade(idhabilidade),
+    FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
+);
+
+
+CREATE TABLE projetoTipo (
+    idprojetoTipo INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    projetoTipoNome VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE projetoStatus (
+    idprojetoStatus INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    descricao VARCHAR(20) NOT NULL -- 'Em andamento', 'Concluído', 'Pausado', 'Cancelado'
+);
+
+
+CREATE TABLE objetoProjeto (
+    idobjetoProjeto INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    objetoNome VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE projeto (
+    idprojeto INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    prazoEntrega DATE NOT NULL,
+    orcamento DECIMAL(10, 2) NOT NULL,
+    idusuario INT NOT NULL,
+    idprojetoTipo INT NOT NULL,
+    idprojetoStatus INT NOT NULL,
+    FOREIGN KEY (idusuario) REFERENCES usuario(idusuario),
+    FOREIGN KEY (idprojetoTipo) REFERENCES projetoTipo(idprojetoTipo),
+    FOREIGN KEY (idprojetoStatus) REFERENCES projetoStatus(idprojetoStatus)
+);
+
+
+CREATE TABLE propostaStatus (
+    idpropostaStatus INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    descricao VARCHAR(20) NOT NULL -- 'Em Análise', 'Aceita', 'Recusada'
+);
+
+
+CREATE TABLE proposta (
+    idproposta INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    idprojeto INT NOT NULL,
+    dataEnvio DATE NOT NULL,
+    valorproposta DECIMAL (10, 2) NOT NULL,
+    idusuario INT NOT NULL,
+    idpropostaStatus INT NOT NULL,
+    FOREIGN KEY (idprojeto) REFERENCES projeto(idprojeto),
+    FOREIGN KEY (idusuario) REFERENCES usuario(idusuario),
+    FOREIGN KEY (idpropostaStatus) REFERENCES propostaStatus(idpropostaStatus)
+);
+
+
+CREATE TABLE propostaObjeto (
+    idpropostaObjeto INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    idproposta INT NOT NULL,
+    idobjetoProjeto INT NOT NULL,
+    FOREIGN KEY (idproposta) REFERENCES proposta(idproposta),
+    FOREIGN KEY (idobjetoProjeto) REFERENCES objetoProjeto(idobjetoProjeto)
+);
+
+
+CREATE TABLE projetoProposta (
+    idprojetoproposta INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    quantidade INT NOT NULL,
+    idprojeto INT NOT NULL,
+    idproposta INT NOT NULL,
+    FOREIGN KEY (idprojeto) REFERENCES projeto(idprojeto),
+    FOREIGN KEY (idproposta) REFERENCES proposta(idproposta)
+);
+
+
+CREATE TABLE parcela (
+    idparcela INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
+    quantidade INT NOT NULL, -- quantidade de parcelas que serão pagas
+    valorParcela DECIMAL(10, 2) NOT NULL,
+    juros DECIMAL(10, 2), -- Adicionada coluna para armazenar o valor dos juros
+    idproposta INT NOT NULL,
+    FOREIGN KEY (idproposta) REFERENCES proposta(idproposta)
+);
+
+
+
+CREATE TABLE pagamento (
+    idpagamento INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
+    valor DECIMAL(10, 2) NOT NULL,
+    data DATETIME NOT NULL,
+    idparcela INT NOT NULL,
+    idproposta INT NOT NULL,
+    FOREIGN KEY (idparcela) REFERENCES parcela(idparcela),
+    FOREIGN KEY (idproposta) REFERENCES proposta(idproposta)
+);
+
+
+CREATE TABLE avaliacao (
+    idavaliacao INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
+    nota INT NOT NULL,
+    data DATE NOT NULL,
+    idusuario INT NOT NULL,
+    idprojeto INT NOT NULL,
+    FOREIGN KEY (idusuario) REFERENCES usuario(idusuario),
+    FOREIGN KEY (idprojeto) REFERENCES projeto(idprojeto)
+);
+	
