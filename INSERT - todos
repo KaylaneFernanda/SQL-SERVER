@@ -1,0 +1,151 @@
+
+
+INSERT INTO usuarioTipo (tipo) VALUES ('Cliente'), ('Profissional'), ('Administrador');
+
+-- Inserção de registros de usuários
+INSERT INTO usuario (usuarioNome, cpfCnpj, email, telefone, idusuarioTipo) VALUES 
+('Claúdio 1', '111.111.111-11', 'cliente1@example.com', '(11) 11111-1111', 1),
+('Cristina 2', '222.222.222-22', 'cliente2@example.com', '(22) 22222-2222', 1),
+('Cristopher 3', '333.333.333-33', 'cliente3@example.com', '(33) 33333-3333', 1),
+('Cleiton 4', '444.444.444-44', 'cliente4@example.com', '(44) 44444-4444', 1),
+('Cleber 5', '555.555.555-55', 'cliente5@example.com', '(55) 55555-5555', 1),
+('Paula 6', '666.666.666-66', 'profissional1@example.com', '(11) 11111-1111', 2),
+('Patrícia 7', '777.777.777-77', 'profissional2@example.com', '(22) 22222-2222', 2),
+('Pablo 8', '888.888.888-88', 'profissional3@example.com', '(33) 33333-3333', 2),
+('Pedro 9', '999.999.999-99', 'profissional4@example.com', '(44) 44444-4444', 2),
+('Priscila 10', '000.000.000-00', 'profissional5@example.com', '(55) 55555-5555', 2),
+('Ana 11', '123.456.789-01', 'admin1@example.com', '(11) 11111-1111', 3),
+('Alex 12', '123.456.789-02', 'admin2@example.com', '(22) 22222-2222', 3),
+('Amanda 13', '123.456.789-03', 'admin3@example.com', '(33) 33333-3333', 3),
+('Alan 14', '123.456.789-04', 'admin4@example.com', '(44) 44444-4444', 3),
+('Alicia 15', '123.456.789-05', 'admin5@example.com', '(55) 55555-5555', 3);
+
+
+INSERT INTO login (senha, idusuario) VALUES
+('Senha111!@#$', 1),
+('Senha222!@#$', 2),
+('Senha333!@#$', 3),
+('Senha444!@#$', 4),
+('Senha555!@#$', 5),
+('Senha666!@#$', 6),
+('Senha777!@#$', 7),
+('Senha888!@#$', 8),
+('Senha999!@#$', 9),
+('Senha100!@#$', 10),
+('Senha110!@#$', 11),
+('Senha120!@#$', 12),
+('Senha130!@#$', 13),
+('Senha140!@#$', 14),
+('Senha150!@#$', 15);
+
+
+
+INSERT INTO habilidadeNivel (nivel) VALUES ('Básico'), ('Intermediário'), ('Avançado');
+
+
+INSERT INTO habilidadeTipo (tipo) VALUES ('Técnica'), ('Soft Skill');
+
+
+
+INSERT INTO habilidade (habilidadeNome, idhabilidadeTipo, idhabilidadeNivel) VALUES 
+('Desenvolvimento Web', 1, 1),
+('Desenvolvimento Mobile', 1, 1),
+('Desenvolvimento de Aplicativos', 1, 1),
+('Design UI/UX', 1, 1),
+('Banco de Dados', 1, 1),
+('Trabalho em Equipe', 2, 1),
+('Comunicação', 2, 1),
+('Liderança', 2, 1);
+
+
+
+INSERT INTO habilidadeProfissional (idhabilidade, idusuario) VALUES
+(1, 6), -- Desenvolvimento Web para Paula
+(2, 7), -- Desenvolvimento Mobile para Patrícia
+(3, 8), -- Desenvolvimento de Aplicativos para Pablo
+(4, 9), -- Design UI/UX para Pedro
+(5, 10), -- Banco de Dados para Priscila
+(6, 6), -- Trabalho em Equipe para Paula
+(7, 9), -- Comunicação para Pedro
+(8, 7); -- Liderança para Patrícia
+
+
+
+INSERT INTO projetoTipo (projetoTipoNome) VALUES ('Website'), ('Aplicativo Mobile'), ('Aplicativo Desktop'), ('Outros');
+
+
+
+INSERT INTO projetoStatus (descricao) VALUES ('Em andamento'), ('Concluído'), ('Pausado'), ('Cancelado');
+
+
+INSERT INTO objetoProjeto (objetoNome) VALUES 
+('Website'),
+('Aplicativo Mobile'),
+('Aplicativo Desktop'),
+('Outros');
+
+
+
+INSERT INTO projeto (titulo, descricao, prazoEntrega, orcamento, idusuario, idprojetoTipo, idprojetoStatus) VALUES 
+('projeto 1', 'Descrição do projeto 1', '2024-05-15', 1000.00, 1, 1, 1),
+('projeto 2', 'Descrição do projeto 2', '2024-06-10', 1500.00, 2, 2, 1),
+('projeto 3', 'Descrição do projeto 3', '2024-07-20', 2000.00, 3, 3, 2),
+('projeto 4', 'Descrição do projeto 4', '2024-08-05', 1200.00, 4, 1, 3),
+('projeto 5', 'Descrição do projeto 5', '2024-09-15', 1800.00, 5, 2, 4);
+
+
+
+INSERT INTO propostaStatus (descricao) VALUES ('Em Análise'), ('Aceita'), ('Recusada');
+
+
+INSERT INTO proposta (idprojeto, dataEnvio, valorproposta, idusuario, idpropostaStatus) VALUES 
+(1, '2024-05-10', 800.00, 6, 1),
+(2, '2024-05-11', 1000.00, 7, 1),
+(3, '2024-05-12', 1500.00, 8, 2),
+(4, '2024-05-13', 900.00, 9, 3),
+(5, '2024-05-14', 1200.00, 10, 3);
+
+
+
+-- Inserção de dados na tabela propostaobjeto
+INSERT INTO propostaObjeto (idproposta, idobjetoProjeto) VALUES 
+(1, 1),  -- proposta 1 inclui um Website
+(1, 2),  -- proposta 1 também inclui um Aplicativo Mobile
+(2, 1),  -- proposta 2 inclui um Website
+(3, 3),  -- proposta 3 inclui um Aplicativo Desktop
+(4, 4);  -- proposta 4 inclui Outros
+
+
+
+INSERT INTO projetoProposta (quantidade, idprojeto, idproposta) VALUES
+(4, 1, 1),
+(5, 2, 2),
+(2, 4, 4),
+(1, 3, 3),
+(3, 5, 5);
+
+
+INSERT INTO parcela (quantidade, valorParcela, juros, idproposta) VALUES 
+(1, 800.00, 0, 1),
+(2, 500.00, 0, 2),
+(3, 500.00, 0, 3),
+(4, 225.00, 0, 4),
+(5, 240.00, 0, 5);
+
+
+
+INSERT INTO pagamento (valor, data, idparcela, idproposta) VALUES 
+(800.00, '2024-05-20T15:00:00', 1, 1),
+(1000.00, '2024-05-21T16:00:00', 2, 2),
+(1500.00, '2024-05-22T17:00:00', 3, 3),
+(900.00, '2024-05-23T18:00:00', 4, 4),
+(1200.00, '2024-05-24T19:00:00', 5, 5);
+
+
+
+INSERT INTO avaliacao (nota, data, idusuario, idprojeto) VALUES 
+(5, '2024-05-25', 6, 1),
+(4, '2024-05-26', 7, 2),
+(3, '2024-05-27', 8, 3),
+(4, '2024-05-28', 9, 4),
+(5, '2024-05-29', 10, 5);	
