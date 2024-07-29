@@ -1,0 +1,9 @@
+CREATE PROCEDURE cancelar (@idprojetoStatus INT)
+
+AS BEGIN
+
+UPDATE projetoStatus 
+SET projetoDesc = 'Cancelado'
+WHERE idprojetoStatus = @idprojetoStatus AND projetoDesc = 'Pausado';
+
+END

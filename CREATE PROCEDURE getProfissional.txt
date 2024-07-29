@@ -1,0 +1,35 @@
+CREATE PROCEDURE getProfissional (
+    @idusuario INT = NULL,
+    @idhabilidade INT = NULL,
+    @idavaliacao INT = NULL
+)
+AS BEGIN
+    SELECT 
+        u.idusuario,
+        u.usuarioNome,
+        u.cpfCnpj,
+        u.email,
+        u.telefone,
+        ht.tipo AS habilidadeTipo,
+        h.habilidadeNome,
+        hn.nivel AS habilidadeNivel,
+        a.nota,
+        a.data
+    FROM 
+        usuario u
+    INNER JOIN 
+        habilidadeProfissional hp ON u.idusuario = hp.idusuario
+    INNER JOIN 
+        habilidade h ON hp.idhabilidade = h.idhabilidade
+    INNER JOIN 
+        habilidadeTipo ht ON h.idhabilidadeTipo = ht.idhabilidadeTipo
+    INNER JOIN 
+        habilidadeNivel hn ON h.idhabilidadeNivel = hn.idhabilidadeNivel
+    LEFT JOIN 
+        avaliacao a ON u.idusuario = a.idusuario
+    WHERE 
+        u.idusuarioTipo = 2 -- Tipo de usuário: Profissional
+        AND (@idusuario IS NULL OR u.idusuario = @idusuario)
+        AND (@idhabilidade IS NULL OR h.idhabilidade = @idhabilidade)
+        AND (@idavaliacao IS NULL OR a.idavaliacao = @idavaliacao);
+END;

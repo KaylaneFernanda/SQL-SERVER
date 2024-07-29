@@ -1,0 +1,20 @@
+CREATE PROCEDURE getProposta (@idproposta INT)
+AS 
+BEGIN
+    SELECT 
+        p.idproposta,
+        prj.descricao AS descricaoProjeto,
+        u.usuarioNome AS profissional,
+        p.valorproposta,
+        ps.descricao AS statusProposta
+    FROM 
+        proposta p
+    INNER JOIN 
+        projeto prj ON p.idprojeto = prj.idprojeto
+    INNER JOIN 
+        usuario u ON p.idusuario = u.idusuario
+    INNER JOIN 
+        propostaStatus ps ON p.idpropostaStatus = ps.idpropostaStatus
+    WHERE 
+        p.idproposta = @idproposta;
+END;

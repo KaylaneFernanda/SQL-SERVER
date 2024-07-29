@@ -1,0 +1,39 @@
+CREATE PROCEDURE setParcela
+    @idproposta INT,
+    @quantidade INT
+AS
+BEGIN
+    DECLARE @valorProposta DECIMAL(10, 2);
+    DECLARE @valorParcela DECIMAL(10, 2);
+    DECLARE @juros DECIMAL(10, 2);
+    DECLARE @i INT = 1;
+
+    -- Obter o valor da proposta
+    SELECT @valorProposta = valorproposta
+    FROM proposta
+    WHERE idproposta = @idproposta;
+
+    -- Calcular as parcelas e os juros
+    WHILE @i <= @quantidade
+    BEGIN
+        IF @quantidade >= 4
+        BEGIN
+            -- Calcular o valor com juros de 1% a partir de 4 parcelas
+            SET @juros = @valorProposta * 0.01;
+            SET @valorParcela = (@valorProposta / @quantidade) + @juros;
+        END
+        ELSE
+        BEGIN
+            -- Sem juros
+            SET @juros = 0;
+            SET @valorParcela = @valorProposta / @quantidade;
+        END
+
+        -- Inserir a parcela na tabela parcela e retornar os resultados
+        INSERT INTO parcela (quantidade, valorParcela, juros, idproposta)
+        OUTPUT INSERTED.idparcela, INSERTED.quantidade, INSERTED.valorParcela, INSERTED.juros, INSERTED.idproposta
+        VALUES (@i, @valorParcela, @juros, @idproposta);
+
+        SET @i = @i + 1;
+    END
+END;
